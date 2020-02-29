@@ -693,7 +693,7 @@ double Parser::readBeat(std::int32_t start, Measure& measure, Track& track, Temp
 	if ((read & 0x02) != 0)
 		skip(1);
 
-	return (voice.notes.size() != 0 ? duration : 0);
+	return duration;
 }
 
 /* Read note */
