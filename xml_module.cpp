@@ -11,7 +11,7 @@ void addObjectsToXML(const std::string& name, const std::vector<T>& objects, std
   if (objects.size() > 0) {
     addSpacingToXML(outputStream, indentLevel);
     outputStream << "<" << name << ">\n";
-    for (auto i = 0; i < objects.size(); ++i)
+    for (size_t i = 0; i < objects.size(); ++i)
       objects[i].addToXML(outputStream, indentLevel + 1);
     addSpacingToXML(outputStream, indentLevel);
     outputStream << "</" << name << ">\n";
@@ -49,7 +49,7 @@ std::string Parser::getXML() const
 	// Output comments
 	if (comments.size() > 0) {
 		outputStream << XML_SPACING << "<Comments>\n";
-		for (auto i = 0; i < comments.size(); ++i) {
+		for (size_t i = 0; i < comments.size(); ++i) {
 			outputStream << XML_SPACING << XML_SPACING;
 			outputStream << "<Comment>" << comments[i] << "</Comment>\n";
 		}
@@ -374,7 +374,7 @@ void Chord::addToXML(std::ostringstream& outputStream, std::int32_t indentLevel)
 	if (frets.size() > 0) {
 		addSpacingToXML(outputStream, indentLevel + 1);
 		outputStream << "<Frets>\n";
-		for (auto i = 0; i < frets.size(); ++i) {
+		for (size_t i = 0; i < frets.size(); ++i) {
 			addSpacingToXML(outputStream, indentLevel + 2);
 			outputStream << "<Fret>" << frets[i] << "</Fret>\n";
 		}
