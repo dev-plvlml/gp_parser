@@ -290,7 +290,7 @@ void Parser::readVersion()
 bool Parser::isSupportedVersion(std::string& version)
 {
 	auto versionsCount = sizeof(VERSIONS) / sizeof(const char *);
-	for (auto i = 0; i < versionsCount; ++i) {
+	for (size_t i = 0; i < versionsCount; ++i) {
 		if (version.compare(VERSIONS[i]) == 0) {
 			versionIndex = i;
 			return true;
@@ -379,7 +379,7 @@ void Parser::readChannel(Track& track)
 {
 	auto gmChannel1 = readInt() - 1;
 	auto gmChannel2 = readInt() - 1;
-	if (gmChannel1 >= 0 && gmChannel1 < channels.size()) {
+	if (gmChannel1 >= 0 && gmChannel1 < (int32_t)channels.size()) {
 		// Allocate temporary buffer to hold chars for conversion
 		auto gmChannel1Param = ChannelParam();
 		auto gmChannel2Param = ChannelParam();
@@ -423,10 +423,10 @@ void Parser::readMeasure(Measure& measure, Track& track, Tempo& tempo, std::int8
 	}
 
 	std::vector<Beat*> emptyBeats;
-	for (auto i = 0; i < measure.beats.size(); ++i) {
+	for (size_t i = 0; i < measure.beats.size(); ++i) {
 		auto beatPtr = &measure.beats[i];
 		auto empty = true;
-		for (auto v = 0; v < beatPtr->voices.size(); ++v) {
+		for (size_t v = 0; v < beatPtr->voices.size(); ++v) {
 			if (beatPtr->voices[v].notes.size() != 0)
 				empty = false;
 		}
@@ -434,7 +434,7 @@ void Parser::readMeasure(Measure& measure, Track& track, Tempo& tempo, std::int8
 			emptyBeats.push_back(beatPtr);
 	}
 	for (auto beatPtr : emptyBeats) {
-		for (auto i = 0; i < measure.beats.size(); ++i) {
+		for (size_t i = 0; i < measure.beats.size(); ++i) {
 			if (beatPtr == &measure.beats[i]) {
 				measure.beats.erase(measure.beats.begin() + i);
 				break;
@@ -579,7 +579,7 @@ void Parser::readChord(std::vector<GuitarString>& strings, Beat& beat)
 	skip(4);
 	chord.frets.resize(6);
 	chord.frets[0] = readInt();
-	for (auto i = 0; i < 7; ++i) {
+	for (size_t i = 0; i < 7; ++i) {
 		auto fret = readInt();
 		if (i < chord.strings->size())
 			chord.frets[i] = fret;
@@ -745,10 +745,10 @@ std::int8_t Parser::getTiedNoteValue(std::int32_t string, Track& track)
 			auto& measure = track.measures[m];
 			for (auto b = static_cast<std::int64_t>(measure.beats.size()) - 1; b >= 0; --b) {
 				auto& beat = measure.beats[b];
-				for (auto v = 0; v < beat.voices.size(); ++v) {
+				for (size_t v = 0; v < beat.voices.size(); ++v) {
 					auto& voice = beat.voices[v];
 					if (!voice.empty) {
-						for (auto n = 0; n < voice.notes.size(); ++n) {
+						for (size_t n = 0; n < voice.notes.size(); ++n) {
 							auto& note = voice.notes[n];
 							if (note.string == string)
 								return note.value;
